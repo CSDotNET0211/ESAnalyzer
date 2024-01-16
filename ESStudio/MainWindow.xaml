@@ -1,0 +1,89 @@
+﻿<Window x:Class="ESAnalyzer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:avalonDock="https://github.com/Dirkster99/AvalonDock"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ESAnalyzer"
+        mc:Ignorable="d"
+        Title="ESAnalyzer" Height="450" Width="800" Foreground="White" Background="#1b1b1c">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- StackPanelの部分 -->
+        <StackPanel>
+            <Menu DockPanel.Dock="Top" Background="#2d2d30" Foreground="White">
+                <MenuItem Header="File(_F)">
+                    <MenuItem Header="メニュー" />
+                    <MenuItem Header="メニュー 1-2" />
+                    <Separator />
+                    <MenuItem Header="メニュー 1-3">
+                        <MenuItem Header="メニュー 1-3-1" />
+                        <MenuItem Header="メニュー 1-3-2" />
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Edit(_E)" />
+                <MenuItem Header="Window(_W)" />
+                <MenuItem Header="Help(_H)" />
+            </Menu>
+        </StackPanel>
+
+        <avalonDock:DockingManager Grid.Row="1" x:Name="uxDockingManager" AllowMixedOrientation="True" Margin="0,0,0,0"
+                                   Height="Auto">
+            <avalonDock:DockingManager.Theme>
+                <avalonDock:GenericTheme />
+            </avalonDock:DockingManager.Theme>
+            <avalonDock:LayoutRoot>
+                <avalonDock:LayoutPanel Orientation="Horizontal">
+                    <avalonDock:LayoutAnchorablePane DockWidth="400" x:Name="uxAnchorablePane2">
+                        <!-- ツールウィンドウ -->
+                        <avalonDock:LayoutAnchorable Title="Assembly Explorer" ContentId="AssemblyExplorer">
+                            <TreeView x:Name="CTreeView" FontSize="12" Background="#1f1f1f">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate DataType="local:JSItem"
+                                                              ItemsSource="{Binding Children}">
+                                             <StackPanel Orientation="Horizontal">
+                                                 <i:Interaction.Triggers>    
+                                                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                                                        <i:InvokeCommandAction Command="{Binding ClickCommand}" />
+                                                    </i:EventTrigger>
+                                                    <i:EventTrigger EventName="MouseRightButtonUp">
+                                                        <i:InvokeCommandAction Command="{Binding MenuCommand}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                                <Image Source="{Binding Icon}" Stretch="Uniform" Width="24" Height="24" />
+                                                <TextBlock Text="{Binding Name}" Foreground="#d7d7d7" />
+                                            </StackPanel>
+                                        
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </avalonDock:LayoutAnchorable>
+                    </avalonDock:LayoutAnchorablePane>
+                    <avalonDock:LayoutPanel Orientation="Horizontal">
+                        <avalonDock:LayoutDocumentPane x:Name="uxDocumentPane">
+                            <!-- ドキュメント  ★ここから-->
+                            <avalonDock:LayoutDocument Title="Sample.js - Function(arg,arg2)" ContentId="Document1">
+                                <avalonEdit:TextEditor x:Name="editor" HorizontalScrollBarVisibility="Auto"
+                                                       VerticalScrollBarVisibility="Auto" ShowLineNumbers="True"
+                                                       Foreground="#fefefe" Background="#1e1e1e"
+                                                       SyntaxHighlighting="JavaScript" FontFamily="Consolas">
+                                </avalonEdit:TextEditor>
+
+                            </avalonDock:LayoutDocument>
+                            <!-- ドキュメント ★ここまで-->
+                        </avalonDock:LayoutDocumentPane>
+                    </avalonDock:LayoutPanel>
+
+                </avalonDock:LayoutPanel>
+            </avalonDock:LayoutRoot>
+        </avalonDock:DockingManager>
+    </Grid>
+
+
+</Window>

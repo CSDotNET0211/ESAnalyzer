@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
+      <PackageReference Include="Dirkster.AvalonDock" Version="4.72.1" />
+      <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.72.1" />
+      <PackageReference Include="Dirkster.HL" Version="1.0.4" />
+      <PackageReference Include="Esprima" Version="3.0.4" />
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+      <PackageReference Include="SoftCircuits.JavaScriptFormatter" Version="2.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Res\none.png" />
+      <Resource Include="Res\none.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Ast\" />
+    </ItemGroup>
+
+</Project>
