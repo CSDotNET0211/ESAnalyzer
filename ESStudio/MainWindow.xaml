@@ -17,19 +17,18 @@
 
         <!-- StackPanelの部分 -->
         <StackPanel>
-            <Menu DockPanel.Dock="Top" Background="#2d2d30" Foreground="White">
-                <MenuItem Header="File(_F)">
-                    <MenuItem Header="メニュー" />
-                    <MenuItem Header="メニュー 1-2" />
+            <Menu Style="{DynamicResource DarkMenuStyle}" DockPanel.Dock="Top">
+                <MenuItem Style="{DynamicResource DarkMenuItemStyle}" Header="File(_F)">
+                    <MenuItem Style="{DynamicResource DarkMenuItemStyle}" Header="メニュー" />
+                    <MenuItem Style="{DynamicResource DarkMenuItemStyle}" Header="メニュー 1s-2" />
                     <Separator />
-                    <MenuItem Header="メニュー 1-3">
-                        <MenuItem Header="メニュー 1-3-1" />
-                        <MenuItem Header="メニュー 1-3-2" />
-                    </MenuItem>
+                    <MenuItem Style="{DynamicResource DarkMenuItemStyle}" Header="Preferences" />
                 </MenuItem>
-                <MenuItem Header="Edit(_E)" />
-                <MenuItem Header="Window(_W)" />
-                <MenuItem Header="Help(_H)" />
+                <MenuItem Header="Edit(_E)" Style="{DynamicResource DarkMenuItemStyle}">
+                    <MenuItem Header="MenuItem" />
+                </MenuItem>
+                <MenuItem Style="{DynamicResource DarkMenuItemStyle}" Header="Window(_W)" />
+                <MenuItem Style="{DynamicResource DarkMenuItemStyle}" Header="Help(_H)" />
             </Menu>
         </StackPanel>
 
@@ -47,19 +46,45 @@
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate DataType="local:JSItem"
                                                               ItemsSource="{Binding Children}">
-                                             <StackPanel Orientation="Horizontal">
-                                                 <i:Interaction.Triggers>    
-                                                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                        <i:InvokeCommandAction Command="{Binding ClickCommand}" />
-                                                    </i:EventTrigger>
-                                                    <i:EventTrigger EventName="MouseRightButtonUp">
-                                                        <i:InvokeCommandAction Command="{Binding MenuCommand}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                                <Image Source="{Binding Icon}" Stretch="Uniform" Width="24" Height="24" />
-                                                <TextBlock Text="{Binding Name}" Foreground="#d7d7d7" />
-                                            </StackPanel>
-                                        
+                                        <StackPanel Orientation="Horizontal">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="MouseLeftButtonUp">
+                                                    <i:InvokeCommandAction Command="{Binding ClickCommand}" />
+                                                </i:EventTrigger>
+                                                <!--<i:EventTrigger EventName="MouseRightButtonUp">
+                                                    <i:InvokeCommandAction Command="{Binding MenuCommand}" />
+                                                </i:EventTrigger>-->
+                                            </i:Interaction.Triggers>
+                                            <Image Source="{Binding Icon}" Stretch="Uniform" Width="24" Height="24" />
+                                            <TextBlock Text="{Binding Name}" Foreground="#d7d7d7">
+                                                <TextBlock.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="Refresh children" Click="MenuItem_OnClick"
+                                                                  Tag="RefreshChildren" />
+                                                        <MenuItem Header="Refresh raw children"
+                                                                  Click="MenuItem_OnClick"
+                                                                  Tag="RefreshChildren" />
+                                                        <MenuItem Header="Extract strings" Click="MenuItem_OnClick"
+                                                                  Tag="ExtractStrings" />
+                                                        <MenuItem Header="Edit" Click="MenuItem_OnClick" />
+                                                        <MenuItem Header="Compare with" Click="MenuItem_OnClick" />
+                                                        <MenuItem Header="Rename" Click="MenuItem_OnClick" />
+                                                        <MenuItem Header="Add comment" Click="MenuItem_OnClick" />
+                                                        <MenuItem Header="Remove comment" Click="MenuItem_OnClick" />
+                                                        <Separator />
+                                                        <MenuItem Header="Find all references" Click="MenuItem_OnClick" />
+                                                        <MenuItem Header="Enumerate all function call"
+                                                                  Click="MenuItem_OnClick" />
+                                                        <MenuItem Header="Enumerate all function recursive call"
+                                                                  Click="MenuItem_OnClick" />
+                                                        <Separator />
+                                                        <MenuItem Header="auto rename function with GPT"
+                                                                  Click="MenuItem_OnClick" />
+                                                    </ContextMenu>
+                                                </TextBlock.ContextMenu>
+                                            </TextBlock>
+                                        </StackPanel>
+
                                     </HierarchicalDataTemplate>
                                 </TreeView.ItemTemplate>
                             </TreeView>

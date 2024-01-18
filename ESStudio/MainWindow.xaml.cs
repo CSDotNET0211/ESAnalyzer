@@ -6,11 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
+using AvalonDock.Converters;
+using AvalonDock.Layout;
 using Esprima;
 using Esprima.Ast;
 using Esprima.Utils;
@@ -121,7 +124,53 @@ namespace ESAnalyzer
 
 		private void MenuItem_OnClick(object sender, RoutedEventArgs e)
 		{
-			throw new NotImplementedException();
+			var layout = new LayoutAnchorable();
+			layout.Title = "Extract strings";
+			layout.ContentId = "ID_0001";
+			//layout.WriteXml();
+
+			layout.CanFloat = true;
+			//layout.can
+			var window = uxDockingManager.CreateFloatingWindow(layout, true);
+			window.Show(); 
+			
+			
+			var menuItem = (MenuItem)sender;
+			Console.WriteLine(menuItem.Tag.ToString());
+			var contextMenu = (ContextMenu)menuItem.Parent;
+			var textBlock = (TextBlock)contextMenu.PlacementTarget;
+			var clickedItem = (JSItem)textBlock.DataContext;
+			//contextMenu.Focus();
+			//textBlock.Focus();
+			Console.WriteLine(clickedItem.Name);
+
+			switch (menuItem.Tag.ToString())
+			{
+				case "ExtractStrings":
+					var result = ExtractStrings(clickedItem.Node.ToJavaScriptString());
+					foreach (var str in result)
+					{
+						Console.WriteLine(str);
+					}
+
+					break;
+				case "RefreshChildren":
+					RefreshAssemblyExplorer(clickedItem, clickedItem.Node);
+					break;
+			}
+		}
+
+		static string[] ExtractStrings(string input)
+		{
+			var regex = new Regex(@"'([^'\\]*(?:\\.[^'\\]*)*)'|""([^""\\]*(?:\\.[^""\\]*)*)""");
+			var matches = regex.Matches(input);
+			var result = new HashSet<string>();
+			foreach (Match match in matches)
+			{
+				result.Add(match.Value);
+			}
+
+			return result.ToArray();
 		}
 	}
 
@@ -148,7 +197,6 @@ namespace ESAnalyzer
 
 		private void ExecuteMenuCommand()
 		{
-			
 			(Application.Current.MainWindow as MainWindow).RefreshAssemblyExplorer(this, Node);
 
 			//	PropertyChanged(this, new PropertyChangedEventArgs("Children"));
